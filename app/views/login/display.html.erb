@@ -1,0 +1,17 @@
+<h1>
+	Login to manage my PC's address
+</h1>
+
+<%= form_tag action: :login do %>
+	<fieldset>
+		<legend>Login</legend>
+		<%= label_tag "username", "Login ID:", class: "input_label" %>
+		<%= text_field_tag "username", params["username"], size: 30%><br/>
+		<%= label_tag "username", "Password:", class: "input_label" %>
+		<%= text_field_tag "password", "", size: 30, "data-random" => @uuid%><br/>
+	</fieldset>
+	<%=button_tag "Login", type: "button", id: "login_button"%>
+<% end %>
+<%=javascript_tag defer: "defer" do %>
+window.display_script();
+<% end %>
