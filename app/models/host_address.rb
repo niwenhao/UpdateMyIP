@@ -1,0 +1,2 @@
+class HostAddress < ApplicationRecord
+end

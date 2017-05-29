@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Hostname:</strong>
+  <%= @host_address.hostname %>
+</p>
+
+<p>
+  <strong>Ip:</strong>
+  <%= @host_address.ip %>
+</p>
+
+<%= link_to 'Edit', edit_host_address_path(@host_address) %> |
+<%= link_to 'Back', host_addresses_path %>
