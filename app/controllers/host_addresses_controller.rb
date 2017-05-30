@@ -1,8 +1,49 @@
 require 'digest'
 
 class HostAddressesController < ApplicationController
-  around_action :check_login
+  around_action :check_login, except: [:dig_host, :setup_host]
   before_action :set_host_address, only: [:show, :edit, :update, :destroy]
+  protect_from_forgery except: [:dig_host, :setup_host]
+  
+  def dig_host
+    @dig_result = HostAddress.find_by(hostname: params[:hostname])
+    if @dig_result then
+      render formats: :json
+    else
+      render formats: :json, status: 401, action: :json_error, locals: { message: "Hostname is not found."}
+    end
+  end
+  
+  def setup_host
+    req = params.require(:update_request)
+    
+    req_dt = DateTime.strptime(req.timestamp, "%Y/%m%d %H:%M:%S")
+    curr_dt = DateTime.now
+    
+    if (curr_dt - req_dt).abs.to_f < 60
+      hostAddress = HostAddress.find_by(hostname: req.hostname)
+      if hostAddress
+        digest = "#{req.timestame}#{hostAddress.secret}"
+        digest = Digest::SHA256.hexdigest digest
+        
+        if digest == req.secret
+          hostAddress.ip = req.ip
+          hostAddress.save()
+          render formats: :json
+        else
+          render formats: :json, status: 401, action: :json_error, locals: { message: "Secret is wrong."}
+        end
+      else
+        render formats: :json, status: 404, action: :json_error, locals: { message: "Hostname is not found."}
+      end
+    else
+      render formats: :json, status: 401, action: :json_error, locals: { message: "Timestamp is over."}
+    end
+  end
+  
+  def json_error
+    
+  end
   
   def check_login
     saved_digest = session[:auth_digest]
@@ -94,4 +135,5 @@ class HostAddressesController < ApplicationController
       p "host_address_params"
       params.require(:host_address).permit(:hostname, :ip, :secret)
     end
+
 end

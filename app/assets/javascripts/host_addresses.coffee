@@ -4,9 +4,3 @@
 #= require functions_cryptography
 
 window.reformat_input_form = ->
-	pwd = $('#host_address_scret')
-	pwd.change (e) ->
-		secret = pwd.val()
-		crypt = new Crypt()
-		digest = crypt.HASH.sha256(secret).toString()
-		pwd.val(digest)
