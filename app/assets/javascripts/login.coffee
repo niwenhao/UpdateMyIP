@@ -5,15 +5,15 @@
 
 window.display_script = ->
 	encoder = new Crypt()
-	pwd = $('[name="password"]')
-	pwd.val("")
 
 	$("#login_button").click (event) ->
+		uid = $('[name="username"]')
+		pwd = $('[name="password"]')
 		uuid = pwd.data("random")
-		pwd.css("display", "none")
-		pwdstr = pwd.val()
-		secret = encoder.HASH.sha256("#{pwdstr}#{uuid}")
-		pwd.val(secret.toString())
+		auth_data = uid.val() + ":" + pwd.val()
+		uid.remove()
+		pwd.remove()
+		$('[name="authorization"]').val(encoder.HASH.sha256("#{auth_data}:#{uuid}").toString())
 		$("FORM").submit()
 		
 		

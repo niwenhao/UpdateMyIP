@@ -8,7 +8,8 @@
 		<%= label_tag "username", "Login ID:", class: "input_label" %>
 		<%= text_field_tag "username", params["username"], size: 30%><br/>
 		<%= label_tag "username", "Password:", class: "input_label" %>
-		<%= text_field_tag "password", "", size: 30, "data-random" => @uuid%><br/>
+		<%= password_field_tag "password", "", size: 30, "data-random" => @uuid%><br/>
+		<%= hidden_field_tag "authorization", ""%>
 	</fieldset>
 	<%=button_tag "Login", type: "button", id: "login_button"%>
 <% end %>

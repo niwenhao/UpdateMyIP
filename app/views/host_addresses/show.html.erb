@@ -10,5 +10,10 @@
   <%= @host_address.ip %>
 </p>
 
+<p>
+  <strong>Secret:</strong>
+  <%= @host_address.secret %>
+</p>
+
 <%= link_to 'Edit', edit_host_address_path(@host_address) %> |
 <%= link_to 'Back', host_addresses_path %>

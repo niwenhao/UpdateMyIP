@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170529062354) do
+ActiveRecord::Schema.define(version: 20170530013551) do
 
   create_table "host_addresses", force: :cascade do |t|
-    t.string "hostname"
-    t.string "ip"
+    t.string "hostname", limit: 30
+    t.string "ip", limit: 40
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "secret", limit: 70
     t.index ["hostname"], name: "index_host_addresses_on_hostname", unique: true
   end
 

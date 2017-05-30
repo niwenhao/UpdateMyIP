@@ -7,6 +7,7 @@
     <tr>
       <th>Hostname</th>
       <th>Ip</th>
+      <th>Secret</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,6 +17,7 @@
       <tr>
         <td><%= host_address.hostname %></td>
         <td><%= host_address.ip %></td>
+        <td><%= host_address.secret %></td>
         <td><%= link_to 'Show', host_address %></td>
         <td><%= link_to 'Edit', edit_host_address_path(host_address) %></td>
         <td><%= link_to 'Destroy', host_address, method: :delete, data: { confirm: 'Are you sure?' } %></td>

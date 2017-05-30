@@ -1,5 +1,28 @@
+require 'digest'
+
 class HostAddressesController < ApplicationController
+  around_action :check_login
   before_action :set_host_address, only: [:show, :edit, :update, :destroy]
+  
+  def check_login
+    saved_digest = session[:auth_digest]
+
+    uuid = session[:random_key]
+    
+    if !uuid || !saved_digest then
+      redirect_to controller: :login, action: :display
+    else
+      auth_data = Rails.application.config.admin_identify + ":" + uuid
+      
+      auth_digest = Digest::SHA256.hexdigest auth_data
+      
+      if saved_digest == auth_digest then
+        yield
+      else
+        redirect_to controller: :login, action: :display
+      end
+    end
+  end
 
   # GET /host_addresses
   # GET /host_addresses.json
@@ -25,7 +48,6 @@ class HostAddressesController < ApplicationController
   # POST /host_addresses.json
   def create
     @host_address = HostAddress.new(host_address_params)
-
     respond_to do |format|
       if @host_address.save
         format.html { redirect_to @host_address, notice: 'Host address was successfully created.' }
@@ -69,6 +91,7 @@ class HostAddressesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def host_address_params
-      params.require(:host_address).permit(:hostname, :ip)
+      p "host_address_params"
+      params.require(:host_address).permit(:hostname, :ip, :secret)
     end
 end

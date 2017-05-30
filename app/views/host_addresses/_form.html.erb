@@ -21,7 +21,15 @@
     <%= form.text_field :ip, id: :host_address_ip %>
   </div>
 
+  <div class="field">
+    <%= form.label :secret %>
+    <%= form.text_field :secret, id: "host_address_scret" %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>
+  <%=javascript_tag defer: "defer" do%>
+  window.reformat_input_form()
+  <%end%>
 <% end %>
